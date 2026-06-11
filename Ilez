@@ -1,0 +1,310 @@
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Coffee Date Application ☕🎀</title>
+
+<style>
+    body {
+        margin: 0;
+        font-family: 'Comic Sans MS', cursive, sans-serif;
+        overflow: hidden;
+        background: linear-gradient(135deg, #ffd6e8, #ffeef7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        color: #6d4c5d;
+    }
+
+    .container {
+        background: rgba(255,255,255,0.95);
+        width: 90%;
+        max-width: 550px;
+        padding: 40px;
+        border-radius: 35px;
+        text-align: center;
+        box-shadow: 0 10px 30px rgba(255,105,180,0.25);
+        z-index: 10;
+        position: relative;
+    }
+
+    h1 {
+        color: #ff69b4;
+    }
+
+    p {
+        font-size: 18px;
+    }
+
+    button {
+        padding: 12px 25px;
+        border: none;
+        border-radius: 30px;
+        cursor: pointer;
+        font-size: 16px;
+        margin: 10px;
+        transition: 0.3s;
+    }
+
+    .yes-btn {
+        background: #ff8ec6;
+        color: white;
+    }
+
+    .yes-btn:hover {
+        transform: scale(1.1);
+    }
+
+    .no-btn {
+        background: #ffd6e8;
+        color: #ff69b4;
+        position: relative;
+    }
+
+    .question {
+        display: none;
+    }
+
+    .active {
+        display: block;
+    }
+
+    input {
+        width: 80%;
+        padding: 12px;
+        border-radius: 20px;
+        border: 2px solid #ffc0cb;
+        font-size: 16px;
+        margin-top: 15px;
+    }
+
+    .heart {
+        position: fixed;
+        bottom: -20px;
+        color: pink;
+        animation: float 10s linear infinite;
+        z-index: 1;
+    }
+
+    @keyframes float {
+        from {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        to {
+            transform: translateY(-110vh);
+            opacity: 0;
+        }
+    }
+</style>
+</head>
+
+<body>
+
+<div id="hearts"></div>
+
+<div class="container">
+
+    <div id="q1" class="question active">
+        <h1>☕🎀 Hi Ilez! 🎀☕</h1>
+
+        <p>
+            This is your official invitation to a coffee date this Saturday.
+            <br><br>
+            Can we go out for coffee?
+        </p>
+
+        <button class="yes-btn" onclick="goToQuestion2()">YES 💕</button>
+
+        <button class="no-btn" id="noBtn">
+            No 😭
+        </button>
+    </div>
+
+    <div id="q2" class="question">
+        <h1>🌸 Yay!!! 🌸</h1>
+
+        <p>
+            Are you okay to travel somewhere in Maginhawa, QC?
+        </p>
+
+        <button class="yes-btn" onclick="finalPage()">
+            Yes ✨
+        </button>
+
+        <button class="yes-btn" onclick="showQuestion3()">
+            I'd prefer somewhere else 💭
+        </button>
+    </div>
+
+    <div id="q3" class="question">
+        <h1>📍 Your choice bestie 💖</h1>
+
+        <p>
+            If not, where do you prefer?
+        </p>
+
+        <input
+            type="text"
+            id="locationInput"
+            placeholder="Type your preferred place..."
+        >
+
+        <br>
+
+        <button class="yes-btn" onclick="submitLocation()">
+            Submit 🌷
+        </button>
+    </div>
+
+    <div id="final" class="question">
+        <h1>☕✨ IT'S A DATE ✨☕</h1>
+
+        <p>
+            Dress code: cute. 💅<br><br>
+
+            Payment method:
+            yap session and caffeine. ☕🎀✨
+        </p>
+
+        <button class="yes-btn" onclick="goInstagram()">
+            Message Sofie 💌
+        </button>
+    </div>
+
+</div>
+
+<script>
+
+    const instagram = "https://www.instagram.com/ur.a.nusss/";
+
+    function show(id) {
+        document.querySelectorAll(".question")
+            .forEach(q => q.classList.remove("active"));
+
+        document.getElementById(id)
+            .classList.add("active");
+    }
+
+    function goToQuestion2() {
+        show("q2");
+    }
+
+    function showQuestion3() {
+        show("q3");
+    }
+
+    function finalPage() {
+        localStorage.setItem(
+            "coffeeAnswer",
+            "Ilez said yes to Maginhawa!"
+        );
+
+        show("final");
+    }
+
+    function submitLocation() {
+
+        const location =
+            document.getElementById("locationInput").value;
+
+        if (location.trim() === "") {
+            alert("Please tell me where you'd like to go! 💕");
+            return;
+        }
+
+        localStorage.setItem(
+            "coffeeAnswer",
+            "Preferred location: " + location
+        );
+
+        show("final");
+    }
+
+    function goInstagram() {
+
+        const answer =
+            localStorage.getItem("coffeeAnswer");
+
+        alert(
+            "Take a screenshot of this page and send Sofie a DM! 💌"
+        );
+
+        window.open(instagram, "_blank");
+    }
+
+
+    // Runaway No button 😭
+
+    const noBtn =
+        document.getElementById("noBtn");
+
+    noBtn.addEventListener("mouseover", () => {
+
+        const container =
+            document.querySelector(".container");
+
+        const maxX =
+            container.offsetWidth - noBtn.offsetWidth;
+
+        const maxY =
+            container.offsetHeight - noBtn.offsetHeight;
+
+        const randomX =
+            Math.random() * maxX;
+
+        const randomY =
+            Math.random() * maxY;
+
+        noBtn.style.position = "absolute";
+
+        noBtn.style.left =
+            randomX + "px";
+
+        noBtn.style.top =
+            randomY + "px";
+    });
+
+
+    // Floating hearts 💕
+
+    const hearts =
+        document.getElementById("hearts");
+
+    setInterval(() => {
+
+        const heart =
+            document.createElement("div");
+
+        heart.className = "heart";
+
+        heart.innerHTML =
+            ["💖","💕","💗","💞","🌸"]
+            [Math.floor(Math.random()*5)];
+
+        heart.style.left =
+            Math.random() * 100 + "vw";
+
+        heart.style.fontSize =
+            (20 + Math.random()*20) + "px";
+
+        heart.style.animationDuration =
+            (5 + Math.random()*5) + "s";
+
+        hearts.appendChild(heart);
+
+        setTimeout(() => {
+            heart.remove();
+        }, 10000);
+
+    }, 500);
+
+</script>
+
+</body>
+</html>
+```
